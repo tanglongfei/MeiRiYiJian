@@ -1,4 +1,4 @@
-package com.pineteree.meiriyijian_day01;
+package com.pineteree.meiriyijian;
 
 import org.junit.Test;
 

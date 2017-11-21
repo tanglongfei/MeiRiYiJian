@@ -1,4 +1,4 @@
-package com.pineteree.meiriyijian_day01.me;
+package com.pineteree.meiriyijian.me;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.pineteree.meiriyijian_day01.R;
+import com.pineteree.meiriyijian.R;
 
 /**
  * Created by Administrator on 2017/11/20.

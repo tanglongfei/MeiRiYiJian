@@ -1,4 +1,4 @@
-package com.pineteree.meiriyijian_day01.main;
+package com.pineteree.meiriyijian.main;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,8 +9,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
-import com.pineteree.meiriyijian_day01.R;
-import com.pineteree.meiriyijian_day01.main.model.DrawModel;
+import com.pineteree.meiriyijian.R;
+import com.pineteree.meiriyijian.main.model.DrawModel;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.pineteree.meiriyijian_day01.common;
+package com.pineteree.meiriyijian.common;
 
 /**
  * 作者：Leon

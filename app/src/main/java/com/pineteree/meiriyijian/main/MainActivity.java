@@ -1,4 +1,4 @@
-package com.pineteree.meiriyijian_day01.main;
+package com.pineteree.meiriyijian.main;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -20,12 +20,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.pineteree.meiriyijian_day01.R;
-import com.pineteree.meiriyijian_day01.common.Constant;
-import com.pineteree.meiriyijian_day01.home.HomeFragment;
-import com.pineteree.meiriyijian_day01.main.model.DrawModel;
-import com.pineteree.meiriyijian_day01.me.MeFragment;
-import com.pineteree.meiriyijian_day01.read.ReadFragment;
+import com.pineteree.meiriyijian.R;
+import com.pineteree.meiriyijian.common.Constant;
+import com.pineteree.meiriyijian.home.HomeFragment;
+import com.pineteree.meiriyijian.main.model.DrawModel;
+import com.pineteree.meiriyijian.me.MeFragment;
+import com.pineteree.meiriyijian.read.ReadFragment;
 
 import java.util.ArrayList;
 import java.util.List;

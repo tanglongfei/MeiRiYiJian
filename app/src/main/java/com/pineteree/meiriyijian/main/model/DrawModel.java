@@ -1,4 +1,4 @@
-package com.pineteree.meiriyijian_day01.main.model;
+package com.pineteree.meiriyijian.main.model;
 
 /**
  * 作者：Leon

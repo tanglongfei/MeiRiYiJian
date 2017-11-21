@@ -1,14 +1,13 @@
-package com.pineteree.meiriyijian_day01;
+package com.pineteree.meiriyijian;
 
 
 import android.content.Intent;
-import android.support.annotation.MainThread;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.pineteree.meiriyijian_day01.main.MainActivity;
+import com.pineteree.meiriyijian.main.MainActivity;
 
 import java.util.concurrent.TimeUnit;
 

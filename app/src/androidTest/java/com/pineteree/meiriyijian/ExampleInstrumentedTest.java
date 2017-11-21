@@ -1,4 +1,4 @@
-package com.pineteree.meiriyijian_day01;
+package com.pineteree.meiriyijian;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
