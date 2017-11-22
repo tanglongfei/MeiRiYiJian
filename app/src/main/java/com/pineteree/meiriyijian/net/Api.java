@@ -1,7 +1,8 @@
 package com.pineteree.meiriyijian.net;
 
-import okhttp3.RequestBody;
-import retrofit2.Call;
+import com.pineteree.meiriyijian.home.model.GankModel;
+
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
@@ -10,11 +11,10 @@ import retrofit2.http.Path;
  */
 
 public interface Api {
-
     //http://gank.io/api/data/Android/10/1
     @GET("data/{category}/{pageSize}/{page}")
-    Call<RequestBody> getCategoryData(@Path("category") String category,
-                                      @Path("pageSize") String pageSize,
-                                      @Path("page") String page);
+    Observable<GankModel> getCategoryData(@Path("category") String category,
+                                          @Path("pageSize") int pageSize,
+                                          @Path("page") int page);
 
 }

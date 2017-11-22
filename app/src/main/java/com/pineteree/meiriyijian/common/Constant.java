@@ -9,6 +9,7 @@ public class Constant {
     public static String BASE_URL_READ = "";
 
     public static String CATEGORY_ALL = "all";
+    public static String CATEGORY_Android = "Android";
     public static String CATEGORY_VIDEO = "休息视频";
     public static String CATEGORY_EXPANDRESOURCE = "拓展资源";
     public static String CATEGORY_CLIENT = "前端";
