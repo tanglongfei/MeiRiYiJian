@@ -19,16 +19,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
 import com.pineteree.meiriyijian.R;
 import com.pineteree.meiriyijian.common.Constant;
 import com.pineteree.meiriyijian.home.HomeFragment;
 import com.pineteree.meiriyijian.main.model.DrawModel;
 import com.pineteree.meiriyijian.me.MeFragment;
+import com.pineteree.meiriyijian.net.Api;
+import com.pineteree.meiriyijian.net.HttpManager;
 import com.pineteree.meiriyijian.read.ReadFragment;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private final int NAVIGATION_HOME = 0;
@@ -80,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         mMainDrawListAdapter = new MainDrawListAdapter(this, initData());
         mRvDrawList.setAdapter(mMainDrawListAdapter);
         initListener();
+
     }
 
     private List<DrawModel> initData() {
@@ -101,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         mList.add(new HomeFragment());
         mList.add(new ReadFragment());
         mList.add(new MeFragment());
+
     }
 
     private void initListener() {
