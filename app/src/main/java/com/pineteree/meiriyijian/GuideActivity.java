@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pineteree.meiriyijian.main.MainActivity;
@@ -19,6 +20,7 @@ import io.reactivex.disposables.Disposable;
 
 public class GuideActivity extends AppCompatActivity {
     TextView mTextView;
+    ImageView ivGuideSkip;
     private int mTime = 5;
     Disposable mDisposable;
 
@@ -28,8 +30,8 @@ public class GuideActivity extends AppCompatActivity {
         setContentView(R.layout.activity_guide);
         mTextView = (TextView) findViewById(R.id.tv_guide_time);
         mTextView.setText(mTime + "s");
-
-        mTextView.setOnClickListener(new View.OnClickListener() {
+        ivGuideSkip = (ImageView) findViewById(R.id.iv_guide_skip);
+        ivGuideSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(GuideActivity.this, MainActivity.class));

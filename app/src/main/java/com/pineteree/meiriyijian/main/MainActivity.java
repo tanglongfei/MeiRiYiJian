@@ -1,6 +1,7 @@
 package com.pineteree.meiriyijian.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -18,22 +19,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+
 import com.pineteree.meiriyijian.R;
 import com.pineteree.meiriyijian.common.Constant;
+
 import com.pineteree.meiriyijian.home.HomeFragment;
 import com.pineteree.meiriyijian.main.model.DrawModel;
 import com.pineteree.meiriyijian.me.MeFragment;
-import com.pineteree.meiriyijian.net.Api;
-import com.pineteree.meiriyijian.net.HttpManager;
+import com.pineteree.meiriyijian.othercategory.OtherCategoryActivity;
 import com.pineteree.meiriyijian.read.ReadFragment;
+
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private final int NAVIGATION_HOME = 0;
@@ -210,12 +211,46 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showCategoryInfo(String categroy) {
-        Toast.makeText(this, "跳转到分类" + categroy, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, OtherCategoryActivity.class);
+        intent.putExtra("categroy",categroy);
+        startActivity(intent);
     }
 
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        try {
+            //通过反射找到主标题控件，实现双击标题回到最顶端的功能
+            Field f = toolbar.getClass().getDeclaredField("mTitleTextView");
+            f.setAccessible(true);
+            TextView titleTextView = (TextView) f.get(toolbar);
+
+            titleTextView.setClickable(true);
+            titleTextView.setOnClickListener(new View.OnClickListener() {
+                long firsteTiem = 0;
+
+                //两次点击的时间间隔短认定为双击
+                @Override
+                public void onClick(View v) {
+                    //第一次点击的时间
+                    long pressTime = System.currentTimeMillis();
+                    //比较时间差
+                    if (pressTime - firsteTiem > 500) {
+                        firsteTiem = pressTime;
+                        return;
+                    }
+                    //处理事件，回滚到顶端
+                    if (mVpMain.getCurrentItem() == 0) {
+                        HomeFragment homeFragment = (HomeFragment) mList.get(0);
+                        homeFragment.scrollToTop();
+                    }
+
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

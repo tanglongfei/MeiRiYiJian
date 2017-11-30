@@ -1,4 +1,4 @@
-package com.pineteree.meiriyijian.home;
+package com.pineteree.meiriyijian.base;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +22,7 @@ import java.util.List;
  * 作者：Leon
  * 描述:
  */
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
+public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder> {
     private Context mContext;
     private List<GankModel.ResultsEntity> mListData;
     private OnBaseClickListener mBaseClickListener;
@@ -36,14 +36,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         void onCoverClick(int position, GankModel.ResultsEntity entity);
     }
 
-    public HomeAdapter(Context mContext, List<GankModel.ResultsEntity> mListData) {
+    public BaseAdapter(Context mContext, List<GankModel.ResultsEntity> mListData) {
         this.mContext = mContext;
         this.mListData = mListData;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_homefragment, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_homefragment, parent,
+                false);
         return new ViewHolder(view);
     }
 
@@ -51,12 +52,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final GankModel.ResultsEntity resultsEntity = mListData.get(position);
         holder.tvTitle.setText(resultsEntity.getDesc());
-        holder.tvTime.setText(TimeUtils.getFriendlyTimeSpanByNow(Utils.formatDateFromStr(resultsEntity.getPublishedAt())));
+        holder.tvTime.setText(TimeUtils.getFriendlyTimeSpanByNow(Utils.formatDateFromStr
+                (resultsEntity.getPublishedAt())));
         holder.tvAuthor.setText(resultsEntity.getWho());
         if (resultsEntity.getImages() != null && resultsEntity.getImages().size() > 0) {
             //如果存在图片，则展示缩率图
             holder.ivCover.setVisibility(View.VISIBLE);
-            ImageManager.getInstance().loadImage(mContext, resultsEntity.getImages().get(0), holder.ivCover);
+            ImageManager.getInstance().loadImage(mContext, resultsEntity.getImages().get(0),
+                    holder.ivCover);
         } else {
             //如果不存在图片，则不展示缩率图
             holder.ivCover.setVisibility(View.GONE);
@@ -77,7 +80,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBaseClickListener.onClick(position, resultsEntity);
+                if (null != mBaseClickListener) {
+                    mBaseClickListener.onClick(position, resultsEntity);
+                }
             }
         });
     }
