@@ -15,7 +15,7 @@ import com.pineteree.meiriyijian.main.model.DrawModel;
 import java.util.List;
 
 /**
- * 作者：Leon
+ * 作者：tlf
  * 描述:
  */
 public class MainDrawListAdapter extends RecyclerView.Adapter<MainDrawListAdapter.MainViewHolder> {

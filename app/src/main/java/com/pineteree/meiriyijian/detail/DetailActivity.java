@@ -1,4 +1,4 @@
-package com.pineteree.meiriyijian;
+package com.pineteree.meiriyijian.detail;
 
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -11,7 +11,10 @@ import android.webkit.WebViewClient;
 
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.pineteree.meiriyijian.R;
 import com.pineteree.meiriyijian.base.BaseActivity;
+import com.pineteree.meiriyijian.db.DbManager;
+import com.pineteree.meiriyijian.db.SaveModel;
 import com.pineteree.meiriyijian.home.model.GankModel;
 
 /**
@@ -22,6 +25,10 @@ public class DetailActivity extends BaseActivity {
     private View mView;
     private WebView mWebView;
     private String mUrl;
+    private boolean mIsFromMe;
+    private SaveModel mSaveModel;
+    private String imageTemp = "";
+    private GankModel.ResultsEntity mResultsBean;
 
     @Override
     public View initContentView() {
@@ -32,9 +39,22 @@ public class DetailActivity extends BaseActivity {
     @Override
     protected void initOptions() {
         mWebView = (WebView) mView.findViewById(R.id.webview);
-        GankModel.ResultsEntity resultsBean = (GankModel.ResultsEntity) getIntent()
-                .getSerializableExtra("entity");
-        mUrl = resultsBean.getUrl();
+        mIsFromMe = getIntent().getBooleanExtra("isfromme", false);
+        if (mIsFromMe) {
+            mUrl = getIntent().getStringExtra("url");
+        } else {
+            mResultsBean = (GankModel.ResultsEntity) getIntent()
+                    .getSerializableExtra("entity");
+            mSaveModel = (SaveModel) DbManager.getInstence().queryModel(SaveModel.class, mResultsBean.get_id());
+            mUrl = mResultsBean.getUrl();
+            if (mResultsBean.getImages() != null && mResultsBean.getImages().size() > 0) {
+                imageTemp = mResultsBean.getImages().get(0);
+            }
+            if (mSaveModel == null) {
+                initSaveModel(mResultsBean, imageTemp);
+            }
+
+        }
         startLoading();
         if (StringUtils.isEmpty(mUrl)) {
             ToastUtils.showShort("网络地址加载有误，请稍后再试");
@@ -43,6 +63,13 @@ public class DetailActivity extends BaseActivity {
         }
         initWebView();
         mWebView.loadUrl(mUrl);
+    }
+
+    public void initSaveModel(GankModel.ResultsEntity resultsBean, String imageTemp) {
+        mSaveModel = new SaveModel(resultsBean.get_id(), resultsBean.getCreatedAt(),
+                resultsBean.getDesc(), resultsBean.getPublishedAt(), resultsBean.getSource(),
+                resultsBean.getType(), resultsBean.getUrl(), resultsBean.getUsed(), resultsBean.getWho(),
+                imageTemp, false);
     }
 
     /**
@@ -103,9 +130,15 @@ public class DetailActivity extends BaseActivity {
 
     @Override
     protected void updateOptionsMenu(Menu menu) {
-        super.updateOptionsMenu(menu);
+        if (mSaveModel != null && mSaveModel.isCollection()) {
+            menu.findItem(R.id.action_save).setIcon(R.drawable.menu_action_save_choosen);
+        }
         menu.findItem(R.id.action_download).setVisible(false);
+        if (mIsFromMe) {
+            menu.findItem(R.id.action_save).setVisible(false);
+        }
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK) && mWebView.canGoBack()) {
@@ -142,6 +175,22 @@ public class DetailActivity extends BaseActivity {
         switch (item.getItemId()) {
             case R.id.action_share:
                 startShareIntent("text/plain", "分享一片有用的文章:" + mUrl);
+                break;
+            case R.id.action_save:
+                if (!mSaveModel.isCollection()) {
+                    initSaveModel(mResultsBean, imageTemp);
+                    //进行收藏保存
+                    mSaveModel.setCollection(true);
+                    DbManager.getInstence().save(mSaveModel);
+                    ToastUtils.showShort("收藏成功");
+                    item.setIcon(R.drawable.menu_action_save_choosen);
+                } else {
+                    //取消收藏
+                    DbManager.getInstence().cancelSave(SaveModel.class, mSaveModel.get_id());
+                    ToastUtils.showShort("取消收藏");
+                    item.setIcon(R.drawable.menu_action_save);
+                    finish();
+                }
                 break;
         }
 

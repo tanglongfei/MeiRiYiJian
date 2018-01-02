@@ -1,7 +1,7 @@
 package com.pineteree.meiriyijian.main.model;
 
 /**
- * 作者：Leon
+ * 作者：tlf
  * 描述:
  */
 public class DrawModel {

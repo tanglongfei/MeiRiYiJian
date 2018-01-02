@@ -25,11 +25,13 @@ import android.widget.Toast;
 import com.pineteree.meiriyijian.R;
 import com.pineteree.meiriyijian.common.Constant;
 
+import com.pineteree.meiriyijian.girl.GirlActivity;
 import com.pineteree.meiriyijian.home.HomeFragment;
 import com.pineteree.meiriyijian.main.model.DrawModel;
 import com.pineteree.meiriyijian.me.MeFragment;
 import com.pineteree.meiriyijian.othercategory.OtherCategoryActivity;
 import com.pineteree.meiriyijian.read.ReadFragment;
+import com.pineteree.meiriyijian.search.SearchActivity;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -202,8 +204,7 @@ public class MainActivity extends AppCompatActivity {
                         showCategoryInfo(categroy);
                         break;
                     case "福利":
-                        categroy = Constant.CATEGORY_GIRL;
-                        showCategoryInfo(categroy);
+                        startActivity(new Intent(MainActivity.this, GirlActivity.class));
                         break;
                 }
             }
@@ -212,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showCategoryInfo(String categroy) {
         Intent intent = new Intent(this, OtherCategoryActivity.class);
-        intent.putExtra("categroy",categroy);
+        intent.putExtra("categroy", categroy);
         startActivity(intent);
     }
 
@@ -251,6 +252,18 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main_toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        startActivity(new Intent(this, SearchActivity.class));
+        return true;
     }
 
     /**

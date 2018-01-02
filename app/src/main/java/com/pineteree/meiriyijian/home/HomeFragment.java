@@ -2,7 +2,7 @@ package com.pineteree.meiriyijian.home;
 
 import android.content.Intent;
 
-import com.pineteree.meiriyijian.DetailActivity;
+import com.pineteree.meiriyijian.detail.DetailActivity;
 import com.pineteree.meiriyijian.base.BaseAdapter;
 import com.pineteree.meiriyijian.base.BaseFragment;
 import com.pineteree.meiriyijian.common.Constant;
@@ -20,7 +20,7 @@ public class HomeFragment extends BaseFragment {
     }
 
     @Override
-    protected void initItemListener(BaseAdapter baseAdapter) {
+    protected void initItemListener() {
         mBaseAdapter.addOnClickListener(new BaseAdapter.OnBaseClickListener() {
             @Override
             public void onClick(int position, GankModel.ResultsEntity entity) {
@@ -35,6 +35,6 @@ public class HomeFragment extends BaseFragment {
 
             }
         });
-        super.initItemListener(baseAdapter);
+        super.initItemListener();
     }
 }

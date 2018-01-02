@@ -6,13 +6,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.pineteree.meiriyijian.R;
 import com.pineteree.meiriyijian.common.Constant;
@@ -85,18 +89,17 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initView(view);
+        initOptions(view);
         //设置布局类型
-        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager
-                .VERTICAL, false);
-        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setLayoutManager(initLayoutManager());
         //创建适配器
-        mBaseAdapter = new BaseAdapter(mContext, mList);
+        mBaseAdapter = new BaseAdapter(mContext, mList, initItemType());
         mRecyclerView.setAdapter(mBaseAdapter);
         //设置空布局展示
         mRecyclerView.setmEmptyView(mEmptyView);
         //初次进入隐藏空布局展示，显示加载动画
         mRecyclerView.hideEmptyView();
-        initItemListener(mBaseAdapter);
+        initItemListener();
 
         if (isConnected()) {
             showLoading();
@@ -106,7 +109,34 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
     }
 
-    protected void initItemListener(BaseAdapter baseAdapter) {
+    /**
+     * 实现各自的业务操作，由子类实现
+     *
+     * @param view
+     */
+    protected void initOptions(View view) {
+
+    }
+
+    /**
+     * 初始化显示类型
+     *
+     * @return
+     */
+    public int initItemType() {
+        return Constant.ITEM_TYPE_TEXT;
+    }
+
+    protected void initItemListener() {
+    }
+
+    /**
+     * 初始化列表的LayoutManager，默认提供线性
+     *
+     * @return
+     */
+    public RecyclerView.LayoutManager initLayoutManager() {
+        return new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
     }
 
 
@@ -252,13 +282,22 @@ public abstract class BaseFragment extends Fragment implements BaseView {
             if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                 RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();
                 if (layoutManager instanceof LinearLayoutManager) {
-                    lastPosition = ((LinearLayoutManager) layoutManager)
-                            .findLastVisibleItemPosition();
+                    lastPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+                } else if (layoutManager instanceof GridLayoutManager) {
+                    lastPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+                } else if (layoutManager instanceof StaggeredGridLayoutManager) {
+                    int[] lastPositions = new int[((StaggeredGridLayoutManager) layoutManager).getSpanCount()];
+                    ((StaggeredGridLayoutManager) layoutManager).findFirstVisibleItemPositions(lastPositions);
+                    lastPosition = findMax(lastPositions);
                 }
                 //判断当前列表是否滑动到底部
                 if (!mRecyclerView.canScrollVertically(1)) {
                     //滑动到底部，需要触发上拉加载更多操作
-                    mRecyclerView.smoothScrollToPosition(lastPosition);
+                    try {
+                        mRecyclerView.smoothScrollToPosition(lastPosition);
+                    } catch (IllegalArgumentException e) {
+                        LogUtils.d("recyclerViewPosition",e.getMessage());
+                    }
                     if (!mIsLoadMore) {
                         ToastUtils.showShort("没有更多数据了");
                         return;
@@ -269,5 +308,15 @@ public abstract class BaseFragment extends Fragment implements BaseView {
                 }
             }
         }
+    }
+
+    private int findMax(int[] lastPositions) {
+        int max = lastPositions[0];
+        for (int value : lastPositions) {
+            if (value > max) {
+                max = value;
+            }
+        }
+        return max;
     }
 }

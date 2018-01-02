@@ -11,7 +11,7 @@ import com.pineteree.meiriyijian.R;
 
 
 /**
- * 作者：Leon
+ * 作者：tlf
  * 描述: 图片处理类
  */
 public class ImageManager {

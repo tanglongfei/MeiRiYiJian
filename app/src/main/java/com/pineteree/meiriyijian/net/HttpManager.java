@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
- * 作者：Leon
+ * 作者：tlf
  * 描述: 网络请求管理器
  */
 public class HttpManager {

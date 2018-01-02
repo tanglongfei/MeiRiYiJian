@@ -5,14 +5,14 @@ import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
 
-import com.pineteree.meiriyijian.DetailActivity;
+import com.pineteree.meiriyijian.detail.DetailActivity;
 import com.pineteree.meiriyijian.base.BaseAdapter;
 import com.pineteree.meiriyijian.base.BaseFragment;
 import com.pineteree.meiriyijian.home.model.GankModel;
 
 
 /**
- * @author Leon
+ * @author tlf
  * @date
  */
 
@@ -20,13 +20,12 @@ public class OtherCategroyFragment extends BaseFragment {
     private static final String CATEGROY = "categroy";
 
     public static Fragment newInstence(String tag) {
-        OtherCategroyFragment otherCategroyFragment = new OtherCategroyFragment();
+        OtherCategroyFragment otherCategroyFragment =  new OtherCategroyFragment();
         Bundle bundle = new Bundle();
         bundle.putString(CATEGROY, tag);
         otherCategroyFragment.setArguments(bundle);
         return otherCategroyFragment;
     }
-
 
     @Override
     public String getApiCategroy() {
@@ -34,8 +33,8 @@ public class OtherCategroyFragment extends BaseFragment {
     }
 
     @Override
-    protected void initItemListener(BaseAdapter baseAdapter) {
-        baseAdapter.addOnClickListener(new BaseAdapter.OnBaseClickListener() {
+    protected void initItemListener() {
+        mBaseAdapter.addOnClickListener(new BaseAdapter.OnBaseClickListener() {
             @Override
             public void onClick(int position, GankModel.ResultsEntity entity) {
                 //跳转到详情界面
@@ -49,6 +48,6 @@ public class OtherCategroyFragment extends BaseFragment {
 
             }
         });
-        super.initItemListener(baseAdapter);
+        super.initItemListener();
     }
 }
